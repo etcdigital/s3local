@@ -219,7 +219,7 @@ describe('Static Website Tests', function () {
     expect(res.body).to.contain.string('Key: page/not-exists');
   });
 
-  it('returns a HTML 404 error page for a missing index key', async function () {
+  it('returns a HTML 404 error page for a missing index Key', async function () {
     let res;
     try {
       res = await request('website0/page/not-exists/', {
@@ -352,7 +352,7 @@ describe('Static Website Tests', function () {
     it('evaluates a single simple routing rule', async function () {
       let res;
       try {
-        res = await request(`website2/test/key/`, {
+        res = await request(`website2/test/Key/`, {
           baseUrl: s3Client.endpoint.href,
           headers: { accept: 'text/html' },
           followRedirect: false,
@@ -363,7 +363,7 @@ describe('Static Website Tests', function () {
       expect(res.statusCode).to.equal(301);
       expect(res.headers).to.have.property(
         'location',
-        s3Client.endpoint.href + 'website2/replacement/key/',
+        s3Client.endpoint.href + 'website2/replacement/Key/',
       );
     });
 
@@ -412,7 +412,7 @@ describe('Static Website Tests', function () {
     it('evaluates a multi-rule config', async function () {
       let res;
       try {
-        res = await request(`website3/simple/key`, {
+        res = await request(`website3/simple/Key`, {
           baseUrl: s3Client.endpoint.href,
           headers: { accept: 'text/html' },
           followRedirect: false,
@@ -423,14 +423,14 @@ describe('Static Website Tests', function () {
       expect(res.statusCode).to.equal(301);
       expect(res.headers).to.have.property(
         'location',
-        s3Client.endpoint.href + 'website3/replacement/key',
+        s3Client.endpoint.href + 'website3/replacement/Key',
       );
     });
 
     it('evaluates a complex rule', async function () {
       let res;
       try {
-        res = await request(`website3/complex/key`, {
+        res = await request(`website3/complex/Key`, {
           baseUrl: s3Client.endpoint.href,
           headers: { accept: 'text/html' },
           followRedirect: false,

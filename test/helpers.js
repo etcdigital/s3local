@@ -40,7 +40,7 @@ exports.generateTestObjects = function generateTestObjects(
   const padding = amount.toString().length;
   const objects = times(amount, (i) => ({
     Bucket: bucket,
-    Key: 'key' + i.toString().padStart(padding, '0'),
+    Key: 'Key' + i.toString().padStart(padding, '0'),
     Body: 'Hello!',
   }));
 

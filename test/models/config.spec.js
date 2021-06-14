@@ -306,7 +306,7 @@ describe('S3WebsiteConfiguration', () => {
   <RoutingRules>
       <RoutingRule>
           <Redirect>
-              <ReplaceKeyPrefixWith>url?test=1&amp;key=</ReplaceKeyPrefixWith>
+              <ReplaceKeyPrefixWith>url?test=1&amp;Key=</ReplaceKeyPrefixWith>
           </Redirect>
       </RoutingRule>
   </RoutingRules>
@@ -314,7 +314,7 @@ describe('S3WebsiteConfiguration', () => {
     `);
 
         expect(config.routingRules[0].redirect.ReplaceKeyPrefixWith).to.equal(
-          'url?test=1&key=',
+          'url?test=1&Key=',
         );
       });
 

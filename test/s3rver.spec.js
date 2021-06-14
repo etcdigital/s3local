@@ -172,7 +172,7 @@ describe('S3rver', () => {
       const body = 'Hello!';
 
       const form = new FormData();
-      form.append('key', 'testPostKey');
+      form.append('Key', 'testPostKey');
       form.append('file', body);
       await request.post('bucket-a', {
         baseUrl: s3Client.endpoint.href,
@@ -184,7 +184,7 @@ describe('S3rver', () => {
       expect(event.Records[0].eventName).to.equal('ObjectCreated:Post');
       expect(event.Records[0].s3.bucket.name).to.equal('bucket-a');
       expect(event.Records[0].s3.object).to.contain({
-        key: 'testPostKey',
+        Key: 'testPostKey',
         size: body.length,
         eTag: crypto.createHash('md5').update(body).digest('hex'),
       });
@@ -200,7 +200,7 @@ describe('S3rver', () => {
       expect(event.Records[0].eventName).to.equal('ObjectCreated:Put');
       expect(event.Records[0].s3.bucket.name).to.equal('bucket-a');
       expect(event.Records[0].s3.object).to.contain({
-        key: 'testPutKey',
+        Key: 'testPutKey',
         size: body.length,
         eTag: crypto.createHash('md5').update(body).digest('hex'),
       });
@@ -223,7 +223,7 @@ describe('S3rver', () => {
       expect(event.Records[0].eventName).to.equal('ObjectCreated:Copy');
       expect(event.Records[0].s3.bucket.name).to.equal('bucket-b');
       expect(event.Records[0].s3.object).to.contain({
-        key: 'testCopy',
+        Key: 'testCopy',
         size: body.length,
       });
     });
@@ -245,7 +245,7 @@ describe('S3rver', () => {
       expect(event.Records[0].eventName).to.equal('ObjectRemoved:Delete');
       expect(event.Records[0].s3.bucket.name).to.equal('bucket-a');
       expect(event.Records[0].s3.object).to.contain({
-        key: 'testDelete',
+        Key: 'testDelete',
       });
     });
   });

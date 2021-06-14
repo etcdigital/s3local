@@ -6,15 +6,15 @@ const RoutingRule = require('../../lib/models/routing-rule');
 
 describe('RoutingRule', () => {
   describe('Condition', () => {
-    const matchingKey = 'prefix/key';
-    const nonMatchKey = 'without-prefix/key';
+    const matchingKey = 'prefix/Key';
+    const nonMatchKey = 'without-prefix/Key';
     const matchingStatusCode = 404;
     const nonMatchStatusCode = 200;
 
     it('redirects with no condition', () => {
       const rule = new RoutingRule({});
 
-      expect(rule.shouldRedirect('key', 200)).to.exist;
+      expect(rule.shouldRedirect('Key', 200)).to.exist;
     });
 
     it('redirects using only KeyPrefixEquals', () => {
@@ -35,8 +35,8 @@ describe('RoutingRule', () => {
         },
       });
 
-      expect(rule.shouldRedirect('key', matchingStatusCode)).to.be.true;
-      expect(rule.shouldRedirect('key', nonMatchStatusCode)).to.be.false;
+      expect(rule.shouldRedirect('Key', matchingStatusCode)).to.be.true;
+      expect(rule.shouldRedirect('Key', nonMatchStatusCode)).to.be.false;
     });
 
     it('redirects using both KeyPrefixEquals and HttpErrorCodeReturnedEquals', () => {
@@ -68,8 +68,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(301);
-      expect(rule.getRedirectLocation('key', defaults)).to.equal(
-        'https://localhost/key',
+      expect(rule.getRedirectLocation('Key', defaults)).to.equal(
+        'https://localhost/Key',
       );
     });
 
@@ -81,8 +81,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(307);
-      expect(rule.getRedirectLocation('key', defaults)).to.equal(
-        'https://example.com/key',
+      expect(rule.getRedirectLocation('Key', defaults)).to.equal(
+        'https://example.com/Key',
       );
     });
 
@@ -94,8 +94,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(301);
-      expect(rule.getRedirectLocation('key', defaults)).to.equal(
-        'http://example.com/key',
+      expect(rule.getRedirectLocation('Key', defaults)).to.equal(
+        'http://example.com/Key',
       );
     });
 
@@ -110,8 +110,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(301);
-      expect(rule.getRedirectLocation('prefix/key', defaults)).to.equal(
-        'https://example.com/replacement/key',
+      expect(rule.getRedirectLocation('prefix/Key', defaults)).to.equal(
+        'https://example.com/replacement/Key',
       );
     });
 
@@ -123,8 +123,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(301);
-      expect(rule.getRedirectLocation('prefix/key', defaults)).to.equal(
-        'https://example.com/replacement/prefix/key',
+      expect(rule.getRedirectLocation('prefix/Key', defaults)).to.equal(
+        'https://example.com/replacement/prefix/Key',
       );
     });
 
@@ -136,7 +136,7 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(301);
-      expect(rule.getRedirectLocation('key', defaults)).to.equal(
+      expect(rule.getRedirectLocation('Key', defaults)).to.equal(
         'https://example.com/replacement',
       );
     });
@@ -155,8 +155,8 @@ describe('RoutingRule', () => {
       });
 
       expect(rule.statusCode).to.equal(307);
-      expect(rule.getRedirectLocation('prefix/key', defaults)).to.equal(
-        'http://localhost/replacement/key',
+      expect(rule.getRedirectLocation('prefix/Key', defaults)).to.equal(
+        'http://localhost/replacement/Key',
       );
     });
   });

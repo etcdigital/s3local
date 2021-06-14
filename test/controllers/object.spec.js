@@ -58,13 +58,13 @@ describe('Operations on Objects', () => {
     it('deletes 500 objects with deleteObjects', async function () {
       this.timeout(30000);
       await generateTestObjects(s3Client, 'bucket-a', 500);
-      const deleteObj = { Objects: times(500, (i) => ({ Key: 'key' + i })) };
+      const deleteObj = { Objects: times(500, (i) => ({ Key: 'Key' + i })) };
       const data = await s3Client
         .deleteObjects({ Bucket: 'bucket-a', Delete: deleteObj })
         .promise();
       expect(data.Deleted).to.exist;
       expect(data.Deleted).to.have.lengthOf(500);
-      expect(find(data.Deleted, { Key: 'key67' })).to.exist;
+      expect(find(data.Deleted, { Key: 'Key67' })).to.exist;
     });
 
     it('reports invalid XML when using deleteObjects with zero objects', async function () {
@@ -102,7 +102,7 @@ describe('Operations on Objects', () => {
         times(500),
         (i) =>
           s3Client
-            .deleteObject({ Bucket: 'bucket-a', Key: 'key' + i })
+            .deleteObject({ Bucket: 'bucket-a', Key: 'Key' + i })
             .promise(),
         { concurrency: 100 },
       );
@@ -150,12 +150,12 @@ describe('Operations on Objects', () => {
       await s3Client
         .putObject({
           Bucket: 'bucket-a',
-          Key: 'somekey',
+          Key: 'someKey',
           Body: '',
         })
         .promise();
       const object = await s3Client
-        .headObject({ Bucket: 'bucket-a', Key: 'somekey' })
+        .headObject({ Bucket: 'bucket-a', Key: 'someKey' })
         .promise();
       expect(object.ETag).to.match(/"[a-fA-F0-9]{32}"/);
     });
@@ -310,7 +310,7 @@ describe('Operations on Objects', () => {
             Key: 'text',
           })
           .promise(),
-      ).to.eventually.be.rejectedWith('The specified key does not exist.');
+      ).to.eventually.be.rejectedWith('The specified Key does not exist.');
     });
 
     it('returns an empty tag set for an untagged object', async function () {
@@ -332,7 +332,7 @@ describe('Operations on Objects', () => {
   describe('POST Object', () => {
     it('stores a text object for a multipart/form-data request', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('file', 'Hello!', 'post_file.txt');
       const res = await request.post('bucket-a', {
         baseUrl: s3Client.endpoint.href,
@@ -353,7 +353,7 @@ describe('Operations on Objects', () => {
         res = await request.post('bucket-a', {
           baseUrl: s3Client.endpoint.href,
           body: new URLSearchParams({
-            key: 'text',
+            Key: 'text',
             file: 'Hello!',
           }).toString(),
         });
@@ -368,7 +368,7 @@ describe('Operations on Objects', () => {
 
     it('stores a text object without filename part metadata', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('file', 'Hello!');
       const res = await request.post('bucket-a', {
         baseUrl: s3Client.endpoint.href,
@@ -385,7 +385,7 @@ describe('Operations on Objects', () => {
 
     it('stores a text object with a content-type', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('Content-Type', 'text/plain');
       form.append('file', 'Hello!', 'post_file.txt');
       const res = await request.post('bucket-a', {
@@ -404,7 +404,7 @@ describe('Operations on Objects', () => {
     it('returns the location of the stored object in a header', async function () {
       const file = require.resolve('../fixtures/image0.jpg');
       const form = new FormData();
-      form.append('key', 'image');
+      form.append('Key', 'image');
       form.append('file', fs.createReadStream(file));
       const res = await request.post('bucket-a', {
         baseUrl: s3Client.endpoint.href,
@@ -425,7 +425,7 @@ describe('Operations on Objects', () => {
     it('returns the location of the stored object in a header with vhost URL', async function () {
       const file = require.resolve('../fixtures/image0.jpg');
       const form = new FormData();
-      form.append('key', 'image');
+      form.append('Key', 'image');
       form.append('file', fs.createReadStream(file));
       const res = await request.post('', {
         baseUrl: s3Client.endpoint.href,
@@ -445,7 +445,7 @@ describe('Operations on Objects', () => {
     it('returns the location of the stored object in a header with subdomain URL', async function () {
       const file = require.resolve('../fixtures/image0.jpg');
       const form = new FormData();
-      form.append('key', 'image');
+      form.append('Key', 'image');
       form.append('file', fs.createReadStream(file));
       const res = await request.post('', {
         baseUrl: s3Client.endpoint.href,
@@ -464,7 +464,7 @@ describe('Operations on Objects', () => {
 
     it('returns a 200 status code with empty response body', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_status', '200');
       form.append('file', 'Hello!');
       const res = await request.post('bucket-a', {
@@ -479,7 +479,7 @@ describe('Operations on Objects', () => {
 
     it('returns a 201 status code with XML response body', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_status', '201');
       form.append('file', 'Hello!');
       const res = await request.post('bucket-a', {
@@ -495,7 +495,7 @@ describe('Operations on Objects', () => {
 
     it('returns a 204 status code when an invalid status is specified', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_status', '301');
       form.append('file', 'Hello!');
       const res = await request.post('bucket-a', {
@@ -509,7 +509,7 @@ describe('Operations on Objects', () => {
     it('redirects a custom location with search parameters', async function () {
       const successRedirect = new URL('http://foo.local/path?bar=baz');
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_redirect', successRedirect.href);
       form.append('file', 'Hello!');
       let res;
@@ -528,7 +528,7 @@ describe('Operations on Objects', () => {
       expect(location.pathname).to.equal(successRedirect.pathname);
       expect(new Map(location.searchParams)).to.contain.key('bar');
       expect(location.searchParams.get('bucket')).to.equal('bucket-a');
-      expect(location.searchParams.get('key')).to.equal('text');
+      expect(location.searchParams.get('Key')).to.equal('text');
       expect(location.searchParams.get('etag')).to.equal(
         JSON.stringify(md5('Hello!')),
       );
@@ -537,7 +537,7 @@ describe('Operations on Objects', () => {
     it('redirects a custom location using deprecated redirect fieldname', async function () {
       const successRedirect = new URL('http://foo.local/path?bar=baz');
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('redirect', successRedirect.href);
       form.append('file', 'Hello!');
       let res;
@@ -559,7 +559,7 @@ describe('Operations on Objects', () => {
     it('ignores deprecated redirect field when success_action_redirect is specified', async function () {
       const successRedirect = new URL('http://foo.local/path?bar=baz');
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_redirect', successRedirect.href);
       form.append('redirect', 'http://ignore-me.local');
       form.append('file', 'Hello!');
@@ -582,7 +582,7 @@ describe('Operations on Objects', () => {
     it('ignores status field when redirect is specified', async function () {
       const successRedirect = new URL('http://foo.local/path?bar=baz');
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('success_action_redirect', successRedirect.href);
       form.append('success_action_status', '200');
       form.append('file', 'Hello!');
@@ -601,7 +601,7 @@ describe('Operations on Objects', () => {
 
     it('ignores fields specified after the file field', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       form.append('file', 'Hello!');
       form.append('Content-Type', 'text/plain');
       form.append('success_action_status', '200');
@@ -620,7 +620,7 @@ describe('Operations on Objects', () => {
       );
     });
 
-    it('rejects requests with no key field', async function () {
+    it('rejects requests with no Key field', async function () {
       const form = new FormData();
       form.append('file', 'Hello!');
       let res;
@@ -635,13 +635,13 @@ describe('Operations on Objects', () => {
       }
       expect(res.statusCode).to.equal(400);
       expect(res.body).to.contain(
-        '<ArgumentName>key</ArgumentName><ArgumentValue></ArgumentValue>',
+        '<ArgumentName>Key</ArgumentName><ArgumentValue></ArgumentValue>',
       );
     });
 
-    it('rejects requests with zero-length key', async function () {
+    it('rejects requests with zero-length Key', async function () {
       const form = new FormData();
-      form.append('key', '');
+      form.append('Key', '');
       form.append('file', 'Hello!');
       let res;
       try {
@@ -655,13 +655,13 @@ describe('Operations on Objects', () => {
       }
       expect(res.statusCode).to.equal(400);
       expect(res.body).to.contain(
-        '<Message>User key must have a length greater than 0.</Message>',
+        '<Message>User Key must have a length greater than 0.</Message>',
       );
     });
 
     it('rejects requests with no file field', async function () {
       const form = new FormData();
-      form.append('key', 'text');
+      form.append('Key', 'text');
       let res;
       try {
         res = await request.post('bucket-a', {
@@ -725,7 +725,7 @@ describe('Operations on Objects', () => {
       expect(newObject.ContentLength).to.not.equal(object.ContentLength);
     });
 
-    it('distinguishes keys stored with and without a trailing /', async function () {
+    it('distinguishes Keys stored with and without a trailing /', async function () {
       await s3Client
         .putObject({ Bucket: 'bucket-a', Key: 'text', Body: 'Hello!' })
         .promise();
@@ -751,7 +751,7 @@ describe('Operations on Objects', () => {
       await s3Client
         .putObject({
           Bucket: 'bucket-a',
-          Key: `mykey-&-${reservedChars}`,
+          Key: `myKey-&-${reservedChars}`,
           Body: 'Hello!',
         })
         .promise();
@@ -759,7 +759,7 @@ describe('Operations on Objects', () => {
       const object = await s3Client
         .getObject({
           Bucket: 'bucket-a',
-          Key: `mykey-&-${reservedChars}`,
+          Key: `myKey-&-${reservedChars}`,
         })
         .promise();
 
@@ -785,7 +785,7 @@ describe('Operations on Objects', () => {
           Key: 'textmetadata',
           Body: 'Hello!',
           Metadata: {
-            someKey: 'value',
+            somekey: 'value',
           },
         })
         .promise();
@@ -868,7 +868,7 @@ describe('Operations on Objects', () => {
       await s3Client
         .putObject({
           Bucket: 'bucket-a',
-          Key: 'somekey',
+          Key: 'someKey',
           Body: 'Hello!',
           StorageClass: 'STANDARD_IA',
         })
@@ -876,7 +876,7 @@ describe('Operations on Objects', () => {
       const object = await s3Client
         .getObject({
           Bucket: 'bucket-a',
-          Key: 'somekey',
+          Key: 'someKey',
         })
         .promise();
       expect(object.ETag).to.equal(JSON.stringify(md5('Hello!')));
@@ -889,7 +889,7 @@ describe('Operations on Objects', () => {
         await s3Client
           .putObject({
             Bucket: 'bucket-a',
-            Key: 'somekey',
+            Key: 'someKey',
             Body: 'Hello!',
             StorageClass: 'BAD_STORAGE',
           })
@@ -1116,7 +1116,7 @@ describe('Operations on Objects', () => {
           Body: await fs.promises.readFile(file),
           ContentType: 'image/jpeg',
           Metadata: {
-            someKey: 'value',
+            somekey: 'value',
           },
         })
         .promise();
@@ -1137,7 +1137,7 @@ describe('Operations on Objects', () => {
       expect(object.ETag).to.equal(data.ETag);
     });
 
-    it('copies an object using spaces/unicode chars in keys', async function () {
+    it('copies an object using spaces/unicode chars in Keys', async function () {
       const srcKey = 'awesome 驚くばかり.jpg';
       const destKey = 'new 新しい.jpg';
 
@@ -1182,7 +1182,7 @@ describe('Operations on Objects', () => {
           CopySource: '/bucket-a/' + srcKey,
           MetadataDirective: 'REPLACE',
           Metadata: {
-            someKey: 'value',
+            somekey: 'value',
           },
         })
         .promise();
@@ -1214,7 +1214,7 @@ describe('Operations on Objects', () => {
           CopySource: '/bucket-a/' + srcKey,
           MetadataDirective: 'REPLACE',
           Metadata: {
-            someKey: 'value',
+            somekey: 'value',
           },
         })
         .promise();
@@ -1226,13 +1226,13 @@ describe('Operations on Objects', () => {
     });
 
     it('fails to update the metadata of an image object when no REPLACE MetadataDirective is specified', async function () {
-      const key = 'image';
+      const Key = 'image';
 
       const file = require.resolve('../fixtures/image0.jpg');
       const data = await s3Client
         .putObject({
           Bucket: 'bucket-a',
-          Key: key,
+          Key,
           Body: await fs.promises.readFile(file),
           ContentType: 'image/jpeg',
         })
@@ -1243,8 +1243,8 @@ describe('Operations on Objects', () => {
         await s3Client
           .copyObject({
             Bucket: 'bucket-a',
-            Key: key,
-            CopySource: '/bucket-a/' + key,
+            Key,
+            CopySource: '/bucket-a/' + Key,
             Metadata: {
               someKey: 'value',
             },
@@ -1327,7 +1327,7 @@ describe('Operations on Objects', () => {
             Tagging: { TagSet: [{ Key: 'Test', Value: 'true' }] },
           })
           .promise(),
-      ).to.eventually.be.rejectedWith('The specified key does not exist.');
+      ).to.eventually.be.rejectedWith('The specified Key does not exist.');
     });
   });
 
@@ -1401,7 +1401,7 @@ describe('Operations on Objects', () => {
           Key: 'multi/directory/path/multipart',
           Body: Buffer.alloc(20 * Math.pow(1024, 2)), // 20MB
           Metadata: {
-            someKey: 'value',
+            somekey: 'value',
           },
         })
         .promise();
@@ -1573,7 +1573,7 @@ describe('Operations on Objects', () => {
       expect(error.code).to.equal('NoSuchBucket');
     });
 
-    it('fails to copy a part from a nonexistent key', async function () {
+    it('fails to copy a part from a nonexistent Key', async function () {
       const upload = await s3Client
         .createMultipartUpload({
           Bucket: 'bucket-a',
