@@ -1,6 +1,6 @@
 {
   "name": "s3local",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Fake S3 server for node - source of S3rver",
   "keywords": [
     "fake",
@@ -35,7 +35,7 @@
     "lib/",
     "example/*.xml"
   ],
-  "bin": "bin/s3rver.js",
+  "bin": "bin/s3local.js",
   "directories": {
     "lib": "./lib",
     "example": "./example",
