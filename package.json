@@ -1,7 +1,7 @@
 {
-  "name": "s3rver",
+  "name": "s3local",
   "version": "4.0.0",
-  "description": "Fake S3 server for node",
+  "description": "Fake S3 server for node - source of S3rver",
   "keywords": [
     "fake",
     "s3",
