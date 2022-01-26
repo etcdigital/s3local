@@ -1,6 +1,6 @@
 {
   "name": "s3local",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Fake S3 server for node - source of S3rver",
   "keywords": [
     "fake",
@@ -14,17 +14,17 @@
   "author": {
     "name": "Jamie Hall",
     "email": "hello@jamiehall.eu",
-    "url": "http://github.com/jamhall/s3rver"
+    "url": "http://github.com/etcdigital/s3local"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jamhall/s3rver.git"
+    "url": "git@github.com:etcdigital/s3local.git"
   },
   "bugs": {
-    "url": "https://github.com/jamhall/s3rver/issues"
+    "url": "https://github.com/etcdigital/s3local/issues"
   },
-  "homepage": "https://github.com/jamhall/s3rver",
+  "homepage": "https://github.com/etcdigital/s3local",
   "scripts": {
     "coverage": "nyc npm test",
     "test": "mocha",
